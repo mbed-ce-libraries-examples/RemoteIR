@@ -67,11 +67,11 @@ private:
     
     typedef struct {
         State state;
-        int c1;
-        int c2;
-        int c3;
-        int d1;
-        int d2;
+        std::chrono::microseconds c1;
+        std::chrono::microseconds c2;
+        std::chrono::microseconds c3;
+        std::chrono::microseconds d1;
+        std::chrono::microseconds d2;
     } work_t;
 
     InterruptIn evt;    /**< Interrupt based input for input. */

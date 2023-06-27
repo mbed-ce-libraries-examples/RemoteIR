@@ -79,16 +79,18 @@ int TransmitterIR::setData(RemoteIR::Format format, uint8_t *buf, int bitlength)
     switch (format) {
         case RemoteIR::NEC:
             ticker.detach();
-            ticker.attach_us(this, &TransmitterIR::tick, RemoteIR::TUS_NEC);
+            ticker.attach(callback(this, &TransmitterIR::tick), RemoteIR::TUS_NEC);
             break;
         case RemoteIR::AEHA:
             ticker.detach();
-            ticker.attach_us(this, &TransmitterIR::tick, RemoteIR::TUS_AEHA);
+            ticker.attach(callback(this, &TransmitterIR::tick), RemoteIR::TUS_AEHA);
             break;
         case RemoteIR::SONY:
             ticker.detach();
-            ticker.attach_us(this, &TransmitterIR::tick, RemoteIR::TUS_SONY);
+            ticker.attach(callback(this, &TransmitterIR::tick), RemoteIR::TUS_SONY);
             break;
+        default:
+            return 0;
     }
 
     UNLOCK();
@@ -109,8 +111,8 @@ void TransmitterIR::tick(void) {
                 /*
                  * NEC.
                  */
-                static const int LEADER_NEC_HEAD = 16;
-                static const int LEADER_NEC_TAIL = 8;
+                const int LEADER_NEC_HEAD = 16;
+                const int LEADER_NEC_TAIL = 8;
                 if (work.leader < LEADER_NEC_HEAD) {
                     tx.write(0.5);
                 } else {
@@ -124,8 +126,8 @@ void TransmitterIR::tick(void) {
                 /*
                  * AEHA.
                  */
-                static const int LEADER_AEHA_HEAD = 8;
-                static const int LEADER_AEHA_TAIL = 4;
+                const int LEADER_AEHA_HEAD = 8;
+                const int LEADER_AEHA_TAIL = 4;
                 if (work.leader < LEADER_AEHA_HEAD) {
                     tx.write(0.5);
                 } else {
@@ -139,8 +141,8 @@ void TransmitterIR::tick(void) {
                 /*
                  * SONY.
                  */
-                static const int LEADER_SONY_HEAD = 4;
-                static const int LEADER_SONY_TAIL = 0;
+                const int LEADER_SONY_HEAD = 4;
+                const int LEADER_SONY_TAIL = 0;
                 if (work.leader < LEADER_SONY_HEAD) {
                     tx.write(0.5);
                 } else {
@@ -246,8 +248,8 @@ void TransmitterIR::tick(void) {
                 /*
                  * NEC.
                  */
-                static const int TRAILER_NEC_HEAD = 1;
-                static const int TRAILER_NEC_TAIL = 2;
+                const int TRAILER_NEC_HEAD = 1;
+                const int TRAILER_NEC_TAIL = 2;
                 if (work.trailer < TRAILER_NEC_HEAD) {
                     tx.write(0.5);
                 } else {
@@ -262,8 +264,8 @@ void TransmitterIR::tick(void) {
                 /*
                  * AEHA.
                  */
-                static const int TRAILER_AEHA_HEAD = 1;
-                static const int TRAILER_AEHA_TAIL = 8000 / RemoteIR::TUS_AEHA;
+                const int TRAILER_AEHA_HEAD = 1;
+                const int TRAILER_AEHA_TAIL = 8000us / RemoteIR::TUS_AEHA;
                 if (work.trailer < TRAILER_AEHA_HEAD) {
                     tx.write(0.5);
                 } else {
@@ -278,8 +280,8 @@ void TransmitterIR::tick(void) {
                 /*
                  * SONY.
                  */
-                static const int TRAILER_SONY_HEAD = 0;
-                static const int TRAILER_SONY_TAIL = 0;
+                const int TRAILER_SONY_HEAD = 0;
+                const int TRAILER_SONY_TAIL = 0;
                 if (work.trailer < TRAILER_SONY_HEAD) {
                     tx.write(0.5);
                 } else {
