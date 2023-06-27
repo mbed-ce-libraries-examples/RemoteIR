@@ -28,7 +28,7 @@ public:
     /**
      * Destructor.
      */
-    ~TransmitterIR();
+    ~TransmitterIR() = default;
 
     typedef enum {
         Idle,
@@ -42,7 +42,7 @@ public:
      *
      * @return Current state.
      */
-    State getState(void);
+    State getState();
 
     /**
      * Set data.

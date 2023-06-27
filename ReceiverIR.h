@@ -28,7 +28,7 @@ public:
     /**
      * Destructor.
      */
-    ~ReceiverIR();
+    ~ReceiverIR() = default;
 
     /**
      * State.
@@ -82,16 +82,16 @@ private:
     data_t data;
     work_t work;
     
-    void init_state(void);
+    void init_state();
 
-    void isr_wdt(void);
-    void isr_fall(void);
-    void isr_rise(void);
+    void isr_wdt();
+    void isr_fall();
+    void isr_rise();
     
     /**
      * ISR timeout for tail detection.
      */
-    void isr_timeout(void);
+    void isr_timeout();
 
 };
 

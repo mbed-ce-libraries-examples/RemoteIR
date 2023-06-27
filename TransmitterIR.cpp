@@ -30,17 +30,11 @@ TransmitterIR::TransmitterIR(PinName txpin) : tx(txpin) {
 }
 
 /**
- * Destructor.
- */
-TransmitterIR::~TransmitterIR() {
-}
-
-/**
  * Get state.
  *
  * @return Current state.
  */
-TransmitterIR::State TransmitterIR::getState(void) {
+TransmitterIR::State TransmitterIR::getState() {
     LOCK();
     State s = work.state;
     UNLOCK();
@@ -97,7 +91,7 @@ int TransmitterIR::setData(RemoteIR::Format format, uint8_t *buf, int bitlength)
     return bitlength;
 }
 
-void TransmitterIR::tick(void) {
+void TransmitterIR::tick() {
     LOCK();
     switch (work.state) {
         case Idle:

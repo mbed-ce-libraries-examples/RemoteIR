@@ -28,12 +28,6 @@ ReceiverIR::ReceiverIR(PinName rxpin) : evt(rxpin) {
 }
 
 /**
- * Destructor.
- */
-ReceiverIR::~ReceiverIR() {
-}
-
-/**
  * Get state.
  *
  * @return Current state.
@@ -75,7 +69,7 @@ int ReceiverIR::getData(RemoteIR::Format *format, uint8_t *buf, int bitlength) {
     return nbits;
 }
 
-void ReceiverIR::init_state(void) {
+void ReceiverIR::init_state() {
     work.c1 = chrono::microseconds(-1);
     work.c2 = chrono::microseconds(-1);
     work.c3 = chrono::microseconds(-1);
@@ -91,7 +85,7 @@ void ReceiverIR::init_state(void) {
     }
 }
 
-void ReceiverIR::isr_wdt(void) {
+void ReceiverIR::isr_wdt() {
     LOCK();
     static int cnt = 0;
     if ((Idle != work.state) || ((0us <= work.c1) || (0us <= work.c2) || (0us <= work.c3) || (0us <= work.d1) || (0us <= work.d2))) {
@@ -306,7 +300,7 @@ void ReceiverIR::isr_rise() {
     UNLOCK();
 }
 
-void ReceiverIR::isr_timeout(void) {
+void ReceiverIR::isr_timeout() {
     LOCK();
 #if 0
     printf("# TIMEOUT [c1=%d, c2=%d, c3=%d, d1=%d, d2=%d, state=%d, format=%d, bitcount=%d]\n",
